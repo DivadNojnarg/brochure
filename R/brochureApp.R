@@ -12,6 +12,8 @@
 #' and/or `tagList/tags` that are invisible on screen (for example a `<script></script>`).
 #' @param wrapped A UI function wrapping the Brochure UI.
 #' Default is `shiny::tagList`.
+#' @param wrapped_options In case you have to call the wrapper function passing
+#' a list of options.
 #' @param basepath The base path of your app. This pattern will be removed from the
 #' url, so that it matches the href of your `page()`. For example, it you have
 #' an app at `http://connect.thinkr.fr/brochure/`, and your page is names `page1`,
@@ -30,16 +32,16 @@
 #' @return A shiny.appobj
 #' @export
 brochureApp <- function(
-  ...,
-  onStart = NULL,
-  options = list(),
-  enableBookmarking = NULL,
-  content_404 = "Not found",
-  basepath = "",
-  req_handlers = list(),
-  res_handlers = list(),
-  wrapped = shiny::tagList
-) {
+    ...,
+    onStart = NULL,
+    options = list(),
+    enableBookmarking = NULL,
+    content_404 = "Not found",
+    basepath = "",
+    req_handlers = list(),
+    res_handlers = list(),
+    wrapped = shiny::tagList,
+    wrapped_options = list()) {
   # Saving the brochure
   brochure(
     ...,
@@ -69,18 +71,21 @@ brochureApp <- function(
         ui <- ui(request)
       }
 
-      ...multipage_opts$wrapped(
-        tagList(
-          shiny::includeScript(
-            system.file(
-              "redirect.js",
-              package = "brochure"
-            )
-          ),
-          ...multipage_opts$extra,
-          ui
-        )
+      opts <- tagList(
+        shiny::includeScript(
+          system.file(
+            "redirect.js",
+            package = "brochure"
+          )
+        ),
+        ...multipage_opts$extra,
+        ui
       )
+      if (length(wrapped_options)) {
+        opts <- c(wrapped_options, opts)
+      }
+
+      do.call(...multipage_opts$wrapped, opts)
     },
     server = function(input, output, session) {
       # Same logic as the UI, we look for the correct
