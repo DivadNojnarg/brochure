@@ -1,18 +1,21 @@
 Package: brochure
 Title: Multipage 'Shiny' Apps
-Version: 0.0.0.9000
+Version: 0.0.0.9024
 Authors@R: 
-    person(given = "Colin",
-           family = "Fay",
-           role = c("aut", "cre"),
-           email = "contact@colinfay.me",
+    person("Colin", "Fay", , "contact@colinfay.me", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-7343-1846"))
 Description: Build multipage 'shiny' apps.
 License: MIT + file LICENSE
+URL: https://github.com/colinfay/brochure
+Imports: 
+    attempt (>= 0.3.1),
+    rlang (>= 0.4.12),
+    shiny (>= 1.6.0)
+Suggests: 
+    golem (>= 0.3.0),
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.0
-Imports: 
-    shiny,
-    attempt
+RoxygenNote: 7.2.3
