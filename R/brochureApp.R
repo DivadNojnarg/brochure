@@ -10,6 +10,8 @@
 #' that return a string, the string will be added as is to the pages.
 #' The only elements that should be injected on top of `page()`s are HTML elements
 #' and/or `tagList/tags` that are invisible on screen (for example a `<script></script>`).
+#' @param server Global server function. Each page can have its own server function. However,
+#' if you use this parameter, all the pages will have a common shiny session.
 #' @param wrapped A UI function wrapping the Brochure UI.
 #' Default is `shiny::tagList`.
 #' @param wrapped_options In case you have to call the wrapper function passing
@@ -33,6 +35,7 @@
 #' @export
 brochureApp <- function(
     ...,
+    server = NULL,
     onStart = NULL,
     options = list(),
     enableBookmarking = NULL,
@@ -87,21 +90,27 @@ brochureApp <- function(
 
       do.call(...multipage_opts$wrapped, opts)
     },
-    server = function(input, output, session) {
-      # Same logic as the UI, we look for the correct
-      # server function
-      # REGEX for path should be handled here
+    server = if (is.null(server)) {
+      # Individual page server funcs
+      function(input, output, session) {
+        # Same logic as the UI, we look for the correct
+        # server function
+        # REGEX for path should be handled here
 
-      path <- rm_backslash(
-        gsub(
-          "websocket/",
-          "",
-          session$request$PATH_INFO
+        path <- rm_backslash(
+          gsub(
+            "websocket/",
+            "",
+            session$request$PATH_INFO
+          )
         )
-      )
-      ...multipage[[
-        path
-      ]]$server(input, output, session)
+        ...multipage[[
+          path
+        ]]$server(input, output, session)
+      }
+    } else {
+      # Global server func
+      server
     },
     onStart = onStart,
     options = options,

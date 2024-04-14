@@ -6,6 +6,7 @@
 \usage{
 brochureApp(
   ...,
+  server = NULL,
   onStart = NULL,
   options = list(),
   enableBookmarking = NULL,
@@ -24,6 +25,9 @@ will be injected \strong{as is} in the page. In other word, if you use a functio
 that return a string, the string will be added as is to the pages.
 The only elements that should be injected on top of \code{page()}s are HTML elements
 and/or \code{tagList/tags} that are invisible on screen (for example a \verb{<script></script>}).}
+
+\item{server}{Global server function. Each page can have its own server function. However,
+if you use this parameter, all the pages will have a common shiny session.}
 
 \item{onStart}{A function that will be called before the app is actually run.
 This is only needed for \code{shinyAppObj}, since in the \code{shinyAppDir}

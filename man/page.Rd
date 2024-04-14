@@ -22,9 +22,8 @@ page(
 If bookmarking is enabled (see \code{enableBookmarking}), this must be
 a single argument function that returns the UI definition.}
 
-\item{server}{A function with three parameters: \code{input}, \code{output}, and
-\code{session}. The function is called once for each session ensuring that each
-app is independent.}
+\item{server}{Global server function. Each page can have its own server function. However,
+if you use this parameter, all the pages will have a common shiny session.}
 
 \item{req_handlers}{a list of functions that can manipulate the \code{req} object.
 These functions should take \code{req} as a parameters, and return the \code{req} object
