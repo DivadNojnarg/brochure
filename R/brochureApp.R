@@ -48,7 +48,7 @@ brochureApp <- function(
   # Saving the brochure
   brochure(
     ...,
-    basepath = "",
+    basepath = basepath,
     req_handlers = req_handlers,
     res_handlers = res_handlers,
     wrapped = wrapped
