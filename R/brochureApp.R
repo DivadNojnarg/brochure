@@ -110,6 +110,9 @@ brochureApp <- function(
       }
     } else {
       # Global server func
+      # make ...multipage environment accessible to the
+      # server function: add dynamic pages!
+      formals(server)$`...pages` <- ...multipage
       server
     },
     onStart = onStart,
